@@ -1,10 +1,18 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_if_null_operators
+import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tyba_prueba/WidgetArguments.dart';
 
-class MyDetailData extends StatelessWidget {
+class MainPage extends StatefulWidget{
+  @override
+  MyDetailData createState()=> MyDetailData();
+}
+
+class MyDetailData extends State {
   static const routeName = '/WidgetArguments';
+  String? imagePath;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +32,7 @@ class MyDetailData extends StatelessWidget {
             padding: EdgeInsets.all(16.0),
             child: ListView(
               padding: const EdgeInsets.all(10),
-              children:  <Widget>[
+              children: <Widget>[
                 Card(
                     child: ListTile(
                         title: Text("Nombre universidad:"),
@@ -52,7 +60,17 @@ class MyDetailData extends StatelessWidget {
                         subtitle: Text(args.webPage),
                         leading: CircleAvatar(
                             backgroundImage: NetworkImage(
-                                "https://d500.epimg.net/cincodias/imagenes/2015/11/20/lifestyle/1448037563_041957_1448037621_noticia_normal.jpg"))))
+                                "https://d500.epimg.net/cincodias/imagenes/2015/11/20/lifestyle/1448037563_041957_1448037621_noticia_normal.jpg")))),
+                TextButton(
+                      child: Text("Cargar imagen"),
+                      onPressed: () async{ 
+                        final ImagePicker _picker = ImagePicker();
+                        PickedFile? pickedFile = await _picker.getImage(source: ImageSource.camera);
+                        imagePath = pickedFile!.path;
+                       setState((){});
+                       },
+                ),
+                (imagePath==null?Container():Image.file(File(imagePath??""))),
               ],
             ),
           ),
